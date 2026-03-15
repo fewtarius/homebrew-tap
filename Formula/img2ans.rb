@@ -6,7 +6,7 @@ class Img2ans < Formula
   desc "Convert images to CP437 ANSI art for telnet BBSs and terminals"
   homepage "https://github.com/fewtarius/img2ans"
   url "https://github.com/fewtarius/img2ans/releases/download/v20260315.1/img2ans-v20260315.1-src.tar.gz"
-  sha256 "0f09197765055bbf34ef556196fbb4b09fbe834a7e8a106e59d5b459aded147b"
+  sha256 "3bd3300d869572b58fb4c229d396c3fc40bd6b448b1cbf51f07cbb85ae3c8d83"
   license "GPL-3.0-or-later"
 
   depends_on "cmake" => :build
