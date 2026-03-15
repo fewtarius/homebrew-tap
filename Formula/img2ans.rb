@@ -1,12 +1,12 @@
 # typed: false
 # frozen_string_literal: true
 
-# version: 0.0.0-dev  (updated automatically by release pipeline)
+# version: 20260315.1
 class Img2ans < Formula
   desc "Convert images to CP437 ANSI art for telnet BBSs and terminals"
   homepage "https://github.com/fewtarius/img2ans"
-  url "https://github.com/fewtarius/img2ans/archive/refs/tags/v0.0.0-dev.tar.gz"
-  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
+  url "https://github.com/fewtarius/img2ans/releases/download/v20260315.1/img2ans-v20260315.1-src.tar.gz"
+  sha256 "0f09197765055bbf34ef556196fbb4b09fbe834a7e8a106e59d5b459aded147b"
   license "GPL-3.0-or-later"
 
   depends_on "cmake" => :build
