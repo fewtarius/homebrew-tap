@@ -1,4 +1,4 @@
-# fewtarius-tap
+# homebrew-tap
 
 Homebrew tap for software by fewtarius.
 
