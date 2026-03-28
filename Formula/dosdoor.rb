@@ -19,12 +19,23 @@ class Dosdoor < Formula
     # install into the Cellar prefix - Homebrew symlinks into HOMEBREW_PREFIX
     bin.install "build/bin/dosdoor"
 
-    # data files
-    (share/"dosdoor/drive_z/dosemu").install Dir["build/commands/*.com"]
+    # Z: drive - system drive with command.com, built commands, and FreeDOS utilities
+    (share/"dosdoor/drive_z").install "freedos/command.com"
+    # Install real .com files (not symlinks) from built commands
+    Dir["build/commands/*.com"].reject { |f| File.symlink?(f) }.each do |f|
+      (share/"dosdoor/drive_z/dosemu").install f
+    end
+    # Create symlinks for command aliases (dpmi.com, cmdline.com -> generic.com)
+    Dir["build/commands/*.com"].select { |f| File.symlink?(f) }.each do |f|
+      ln_sf "generic.com", share/"dosdoor/drive_z/dosemu"/File.basename(f)
+    end
+    # FreeDOS utilities (fossil.com, emufs.sys, ems.sys, etc.)
+    (share/"dosdoor/drive_z/dosemu").install Dir["freedos/dosemu/*"]
+    # FreeDOS boot image (for hdimage boot path)
     (share/"dosdoor/freedos").install Dir["freedos/*.sys", "freedos/*.com", "freedos/*.bat"]
     (share/"dosdoor/freedos/dosemu").install Dir["freedos/dosemu/*"]
-    (share/"dosdoor/freedos/bin").mkpath
     (share/"dosdoor/freedos/tmp").mkpath
+    (share/"dosdoor/drives/c/tmp").mkpath
     (share/"dosdoor/keymap").install Dir["etc/keymap/*"]
 
     # config files go to HOMEBREW_PREFIX/etc (persists across upgrades)
