@@ -4,8 +4,8 @@
 class Dosdoor < Formula
   desc "Lightweight DOS emulator for running BBS door games"
   homepage "https://github.com/fewtarius/dosdoor"
-  url "https://github.com/fewtarius/dosdoor/archive/refs/tags/20260328.1.tar.gz"
-  sha256 "b4990287e41396a532d2b526f33a86902138dc732423e1156798f789e56b9544"
+  url "https://github.com/fewtarius/dosdoor/archive/refs/tags/20260328.2.tar.gz"
+  sha256 "0d7931fbc0194057de84ccc316471d4e6fff68e3820485cf40b988996af00dd8"
   license "GPL-2.0-or-later"
 
   depends_on "s-lang"
