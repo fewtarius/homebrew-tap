@@ -1,12 +1,12 @@
 # typed: false
 # frozen_string_literal: true
 
-# version: 1.0.0
+# version: 1.0.4
 class GithubBackup < Formula
   desc "Comprehensive GitHub backup tool for repos, gists, orgs, and metadata"
   homepage "https://github.com/fewtarius/github-backup"
-  url "https://github.com/fewtarius/github-backup/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "0f9d7262e7e9a9099c70e5233958a771c2031cbd03dbcad269cec135d587b3d1"
+  url "https://github.com/fewtarius/github-backup/archive/refs/tags/v1.0.4.tar.gz"
+  sha256 "d2c67dccf7593436ea05445b29493ad7754c75835c22c68df8dd72b3146e7f4f"
   license "MIT"
 
   depends_on "python@3.13" => :build
