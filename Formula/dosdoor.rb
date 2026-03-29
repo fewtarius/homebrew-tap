@@ -16,31 +16,29 @@ class Dosdoor < Formula
     system "chmod", "+x", "build.sh", "mkpluginhooks", "bisonpp.pl", "install-sh"
     system "./build.sh"
 
-    # install into the Cellar prefix - Homebrew symlinks into HOMEBREW_PREFIX
-    bin.install "build/bin/dosdoor"
+    # stage via the project install target so Homebrew packaging matches
+    # the source install logic exactly
+    stage = buildpath/"stage"
+    staged_prefix = stage/HOMEBREW_PREFIX.relative_path_from(Pathname("/"))
+    cellar_share = prefix/"share"/"dosdoor"
+    system "make", "install", "DESTDIR=#{stage}"
 
-    # Z: drive - system drive with command.com, built commands, and FreeDOS utilities
-    (share/"dosdoor/drive_z").install "freedos/command.com"
-    # Install real .com files (not symlinks) from built commands
-    Dir["build/commands/*.com"].reject { |f| File.symlink?(f) }.each do |f|
-      (share/"dosdoor/drive_z/dosemu").install f
-    end
-    # Create symlinks for command aliases (dpmi.com, cmdline.com -> generic.com)
-    Dir["build/commands/*.com"].select { |f| File.symlink?(f) }.each do |f|
-      ln_sf "generic.com", share/"dosdoor/drive_z/dosemu"/File.basename(f)
-    end
-    # FreeDOS utilities (fossil.com, emufs.sys, ems.sys, etc.)
-    (share/"dosdoor/drive_z/dosemu").install Dir["freedos/dosemu/*"]
-    # FreeDOS boot image (for hdimage boot path)
-    (share/"dosdoor/freedos").install Dir["freedos/*.sys", "freedos/*.com", "freedos/*.bat"]
-    (share/"dosdoor/freedos/dosemu").install Dir["freedos/dosemu/*"]
-    (share/"dosdoor/freedos/tmp").mkpath
-    (share/"dosdoor/drives/c/tmp").mkpath
-    (share/"dosdoor/keymap").install Dir["etc/keymap/*"]
+    bin.install staged_prefix/"bin"/"dosdoor"
+    cellar_share.mkpath
+    system "cp", "-R", "#{staged_prefix}/share/dosdoor/.", cellar_share
+
+    # Homebrew drops empty directories during staged copies. Seed the default
+    # C: drive from the bundled FreeDOS boot tree so first launch works
+    # without mutating the Cellar at runtime.
+    system "mkdir", "-p", "#{prefix}/share/dosdoor/drives/c"
+    system "cp", "-R", "#{prefix}/share/dosdoor/freedos/.", "#{prefix}/share/dosdoor/drives/c"
+    system "mkdir", "-p", "#{prefix}/share/dosdoor/drives/c/tmp"
+    system "touch", "#{prefix}/share/dosdoor/drives/c/tmp/.keep"
+    system "mkdir", "-p", "#{prefix}/share/dosdoor/freedos/tmp"
+    system "touch", "#{prefix}/share/dosdoor/freedos/tmp/.keep"
 
     # config files go to HOMEBREW_PREFIX/etc (persists across upgrades)
-    (etc/"dosdoor").install "etc/dosemu.conf"
-    (etc/"dosdoor").install "etc/global.conf"
+    (etc/"dosdoor").install Dir[staged_prefix/"etc"/"dosdoor"/"*"]
   end
 
   test do
