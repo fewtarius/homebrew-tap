@@ -1,5 +1,5 @@
 cask "photonterm" do
-  version "20260419.3"
+  version "20260419.4"
   sha256 :no_check
 
   url "https://github.com/fewtarius/PhotonTERM/releases/download/#{version}/PhotonTERM-#{version}.dmg"
